@@ -1,0 +1,37 @@
+Spring 3 新增的@value注解
+
+
+在Spring 3.0中，可以通过使用@value，对一些如xxx.properties文件，进行键值对的注入。
+
+步骤如下：
+
+1. 在applicationContext.xml中加入
+
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+        xsi:schemaLocation="http://www.springframework.org/schema/beans   
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+的命名空间。
+
+
+2. 加入
+
+<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:xxx.properties</value>
+            </list>
+        </property>
+</bean>
+
+3. 创建xxx.properties文件，内容如下：
+
+authentication.members=a,b,c,d
+
+4. 在.java文件，使用@value进行键值对注解
+
+@Value("#{'${authentication.members}'.split(',')}")
+private List<String> authorizedMembers;
+
+这样，authentication.members就注入到了authorizedMembers中。
+
